@@ -1,0 +1,38 @@
+# Builds the release from the tagged commit and attests its files, so anyone can verify
+# that main.js, manifest.json and styles.css come from this repository.
+# Verify with: gh attestation verify main.js --repo missyeahhh/adhd-hyperfocus-graph
+name: Release
+
+on:
+  push:
+    tags: ["*"]
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Tests
+        run: node --test test/unit.test.js
+      - name: Manifest matches the tag
+        run: test "$(node -p "require('./manifest.json').version")" = "${GITHUB_REF_NAME}"
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
+      - name: Annotated tag, for the release notes
+        run: git fetch --force origin "refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" main.js manifest.json styles.css --title "${GITHUB_REF_NAME}" --notes-from-tag

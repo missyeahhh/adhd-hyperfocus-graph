@@ -97,6 +97,16 @@ By default the graph hides notes named `GATES*`, `CLAUDE`, `AGENTS`, `README`, `
 
 </details>
 
+<h3><img src="images/h-privacy-en.png" alt="Privacy" width="800"></h3>
+
+🌐 **Nothing leaves your device.** No network requests, no telemetry, no analytics, no account.
+
+📖 **What it reads:** file names, folders, tags and the `label` property, through Obsidian's own index. It never reads the text of your notes.
+
+✍️ **What it writes:** the topic hubs, inside the one folder you choose, and its own settings file in the plugin folder. A note of yours with the same name as a hub is never touched.
+
+⚠️ **Worth knowing:** hubs link to your notes by name, and the settings file keeps the paths of the notes you assign to a topic by hand. If you publish or share your vault (with [Obsidian Publish](https://obsidian.md/publish) or a public repo), they go with it.
+
 <h3><img src="images/h-why-en.png" alt="Why it exists" width="800"></h3>
 
 I needed a better way to organize my second brain. The graph was supposed to show me the big picture, and it showed me noise. Nothing out there was built for a brain that works like mine.

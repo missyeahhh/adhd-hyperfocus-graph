@@ -97,6 +97,16 @@ De entrada el grafo oculta las notas llamadas `GATES*`, `CLAUDE`, `AGENTS`, `REA
 
 </details>
 
+<h3><img src="images/h-privacy-es.png" alt="Privacidad" width="800"></h3>
+
+🌐 **Nada sale de tu dispositivo.** Sin conexiones de red, sin telemetría, sin analytics, sin cuenta.
+
+📖 **Qué lee:** nombres de archivo, carpetas, etiquetas y la propiedad `label`, a través del índice propio de Obsidian. Nunca lee el texto de tus notas.
+
+✍️ **Qué escribe:** los hubs de tema, dentro de la única carpeta que elijas, y su propio archivo de ajustes en la carpeta del plugin. Si tenés una nota con el mismo nombre que un hub, no se toca nunca.
+
+⚠️ **Para tener en cuenta:** los hubs enlazan tus notas por nombre, y el archivo de ajustes guarda las rutas de las notas que asignás a un tema a mano. Si publicás o compartís tu vault (con [Obsidian Publish](https://obsidian.md/publish) o un repo público), se van con él.
+
 <h3><img src="images/h-why-es.png" alt="Por qué existe" width="800"></h3>
 
 Necesitaba una forma mejor de ordenar mi segundo cerebro. El grafo tenía que mostrarme el panorama, y me mostraba ruido. No había nada hecho para un cerebro que funciona como el mío.

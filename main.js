@@ -526,8 +526,10 @@ if (obsidian) {
 
     language() {
       if (this.settings.language !== "auto") return this.settings.language;
-      const l = (window.localStorage.getItem("language") || "en").toLowerCase();
-      return l.startsWith("es") ? "es" : "en";
+      // Obsidian's own API, read only: the plugin keeps nothing outside its data.json
+      const l = obsidian && typeof obsidian.getLanguage === "function" ? obsidian.getLanguage()
+        : window.moment ? window.moment.locale() : "en";
+      return String(l || "en").toLowerCase().startsWith("es") ? "es" : "en";
     }
 
     async loadSettings() {

@@ -1,7 +1,7 @@
 {
   "id": "adhd-hyperfocus-graph",
   "name": "ADHD Hyperfocus Graph",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "minAppVersion": "1.13.0",
   "description": "A calmer graph for ADHD and dyslexic brains: short labels, one hub per topic, a focus layout, Dopamine or Quiet mode palettes and a graph that stays still.",
   "author": "Soledad De Rosa",
