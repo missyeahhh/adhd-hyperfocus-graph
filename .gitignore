@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+# notas internas del taller (no se publican)
+GATES.md
+CLAUDE.md
+docs/internal/

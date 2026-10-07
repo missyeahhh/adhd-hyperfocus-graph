@@ -1,0 +1,32 @@
+/* ADHD Hyperfocus Graph: only the plugin's own modals, settings and status bar item. */
+.hyperfocus-status {
+  cursor: pointer;
+}
+
+.hyperfocus-modal .hyperfocus-help,
+.hyperfocus-settings .setting-item-description {
+  font-size: var(--font-ui-medium);
+  line-height: 1.5;
+}
+
+.hyperfocus-choices {
+  display: flex;
+  gap: var(--size-4-3);
+  margin-block: var(--size-4-4);
+}
+
+.hyperfocus-choices button {
+  flex: 1;
+  padding-block: var(--size-4-3);
+  font-size: var(--font-ui-medium);
+}
+
+.hyperfocus-rules .setting-item-control {
+  flex-wrap: wrap;
+  gap: var(--size-4-2);
+}
+
+.hyperfocus-rules textarea {
+  min-width: 10rem;
+  min-height: 4rem;
+}
