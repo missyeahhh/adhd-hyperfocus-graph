@@ -20,7 +20,7 @@ Este plugin mantiene el grafo que ya tenés y lo vuelve lo bastante tranquilo co
 
 🌙 **Un layout tranquilo.** Las notas de sistema salen del grafo, las etiquetas quedan visibles y la simulación se frena cuando los nodos se acomodan.
 
-🎨 **Tus colores.** Dos paletas, Vivo y Calmo. Claro u oscuro sigue tu tema. Hay una paleta para daltonismo.
+🎨 **Tus colores.** Dos paletas, Dopamine y Quiet mode. Claro u oscuro sigue tu tema. Hay una paleta para daltonismo.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/never-edits-es-dark.png">
@@ -29,12 +29,12 @@ Este plugin mantiene el grafo que ya tenés y lo vuelve lo bastante tranquilo co
 
 <h3><img src="images/h-palettes-es.png" alt="Paletas" width="800"></h3>
 
-<p align="center"><img src="images/palettes-es.png" alt="El mismo grafo en Vivo y en Calmo, cada una en modo oscuro y claro."></p>
+<p align="center"><img src="images/palettes-es.png" alt="El mismo grafo en Dopamine y en Quiet mode, cada una en modo oscuro y claro."></p>
 
 <h3><img src="images/h-start-es.png" alt="Empezá en 3 pasos" width="800"></h3>
 
 1. Instalá y activá el plugin desde [Community plugins](https://obsidian.md/help/community-plugins).
-2. Elegí Vivo o Calmo, y marcá las carpetas que para vos son temas.
+2. Elegí Dopamine o Quiet mode, y marcá las carpetas que para vos son temas.
 3. Abrí el grafo.
 
 Con el comando **Abrir el arranque en 3 pasos** lo volvés a ver. Todo aparece en castellano si Obsidian está en castellano.
@@ -112,4 +112,4 @@ Así que lo armé.
 
 ---
 
-🎨 Hecho por [Soledad De Rosa](https://www.linkedin.com/in/soldr). Licencia MIT.
+🎨 Hecho por [Soledad De Rosa](https://www.linkedin.com/in/soldr). Construido con [Claude Code](https://claude.com/claude-code). Licencia MIT.

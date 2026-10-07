@@ -2,7 +2,7 @@
 /*
  * ADHD Hyperfocus Graph
  * A calmer graph view for ADHD and dyslexic brains: short labels, topic hubs, a focus layout,
- * vivid or calm palettes, still motion and bigger text. It never edits your notes: topic hubs
+ * Dopamine or Quiet mode palettes, still motion and bigger text. It never edits your notes: topic hubs
  * are separate notes inside one folder, and everything else only changes how the graph is drawn.
  *
  * Plain JavaScript, no build step. The pure functions at the top are exported for the tests in test/.
@@ -51,9 +51,9 @@ const STRINGS = {
     sSize: "Label size",
     sSizeDesc: "Bigger text is easier to read. 1 is the Obsidian size.",
     sPalette: "Palette",
-    sPaletteDesc: "Vivid is bright and easy to tell apart. Calm is soft and quiet. Light or dark follows your Obsidian theme.",
-    pVivid: "Vivid",
-    pCalm: "Calm",
+    sPaletteDesc: "Dopamine is bright and easy to tell apart. Quiet mode is soft and low-key. Light or dark follows your Obsidian theme.",
+    pVivid: "Dopamine",
+    pCalm: "Quiet mode",
     sCb: "Colors for color blindness",
     sCbDesc: "Uses a palette that people with color blindness can tell apart.",
     sStill: "Still graph",
@@ -121,9 +121,9 @@ const STRINGS = {
     sSize: "Tamaño de letra",
     sSizeDesc: "La letra más grande se lee mejor. 1 es el tamaño de Obsidian.",
     sPalette: "Paleta",
-    sPaletteDesc: "Vivo es brillante y fácil de distinguir. Calmo es suave y tranquilo. Claro u oscuro sigue el tema de Obsidian.",
-    pVivid: "Vivo",
-    pCalm: "Calmo",
+    sPaletteDesc: "Dopamine es brillante y fácil de distinguir. Quiet mode es suave y tranquilo. Claro u oscuro sigue el tema de Obsidian.",
+    pVivid: "Dopamine",
+    pCalm: "Quiet mode",
     sCb: "Colores para daltonismo",
     sCbDesc: "Usa una paleta que se distingue bien con daltonismo.",
     sStill: "Grafo quieto",

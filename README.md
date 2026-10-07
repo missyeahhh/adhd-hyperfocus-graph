@@ -20,7 +20,7 @@ This plugin keeps the graph you already have and makes it calm enough to think w
 
 🌙 **A calm layout.** System notes leave the graph, labels stay visible, and the simulation stops once the nodes settle.
 
-🎨 **Your colors.** Two palettes, Vivid and Calm. Light or dark follows your theme. There is also a palette for color blindness.
+🎨 **Your colors.** Two palettes, Dopamine and Quiet mode. Light or dark follows your theme. There is also a palette for color blindness.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/never-edits-en-dark.png">
@@ -29,12 +29,12 @@ This plugin keeps the graph you already have and makes it calm enough to think w
 
 <h3><img src="images/h-palettes-en.png" alt="Palettes" width="800"></h3>
 
-<p align="center"><img src="images/palettes-en.png" alt="The same graph in Vivid and Calm, each in dark and light mode."></p>
+<p align="center"><img src="images/palettes-en.png" alt="The same graph in Dopamine and Quiet mode, each in dark and light mode."></p>
 
 <h3><img src="images/h-start-en.png" alt="Start in 3 steps" width="800"></h3>
 
 1. Install and enable the plugin from [Community plugins](https://obsidian.md/help/community-plugins).
-2. Pick Vivid or Calm, tick the folders that are topics for you.
+2. Pick Dopamine or Quiet mode, tick the folders that are topics for you.
 3. Open the graph.
 
 Run the command **Open the 3-step setup** to see it again.
@@ -112,4 +112,4 @@ Found a bug? Got an idea? Does the graph look weird in your vault? Let me know!
 
 ---
 
-🎨 Made by [Soledad De Rosa](https://www.linkedin.com/in/soldr). MIT license.
+🎨 Made by [Soledad De Rosa](https://www.linkedin.com/in/soldr). Built with [Claude Code](https://claude.com/claude-code). MIT license.
