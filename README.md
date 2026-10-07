@@ -1,105 +1,115 @@
-# ADHD Hyperfocus Graph
+<p align="center"><img src="images/header-en.png" alt="ADHD Hyperfocus Graph, by sol. The Obsidian graph, readable for ADHD brains."></p>
 
-The Obsidian graph, made readable for ADHD and dyslexic brains.
+<p align="center"><b>English</b> · <a href="README.es.md">Castellano</a></p>
 
-The core graph shows every file name in full, moves all the time and groups notes by folder. With a few hundred notes it turns into a wall of text. This plugin keeps the graph you already have and changes four things:
+The core [Obsidian](https://obsidian.md) [graph view](https://obsidian.md/help/plugins/graph) renders every file name in full, never stops moving and clusters notes by folder. Past a few hundred notes it turns into a wall of text.
 
-- **Little text at any zoom.** From afar you see only the main dots: your topics, or the most connected notes if you have no topics. Zoom into a cluster and each note shows a short name of 16 letters or fewer. Big vaults need a closer zoom before every note gets a name, so the picture never fills with text.
-- **The full name is one hover away.** Point at any dot and it shows the complete file name.
-- **One hub per topic.** You say what your topics are. Each one gets a hub note that links its notes, so they cluster by meaning, not by folder.
-- **A calm layout.** System notes leave the graph, text stays visible, and the dots stop moving once they settle.
-- **Two palettes.** Vivid or Calm. Light or dark follows your theme. There is also a palette for color blindness.
+This plugin keeps the graph you already have and makes it calm enough to think with.
 
-**It never edits your notes.** Topic hubs live in one folder. Everything else only changes how the graph is drawn. Turn the plugin off and your graph is back as it was.
+<p align="center"><img src="images/before-after-en.png" alt="Before: the core graph, long file names on top of each other. After: short labels and one color per topic."></p>
 
-| Before | After |
-|---|---|
-| ![The core graph: long file names on top of each other](images/before.svg) | ![With the plugin: short labels and one color per topic](images/after-dark.svg) |
+<sub>Illustrations with made-up notes.</sub>
 
-<sub>Illustrations with made-up notes. Light theme: [images/after-light.svg](images/after-light.svg). Calm palette: [images/calm-dark.svg](images/calm-dark.svg).</sub>
+<h3><img src="images/h-what-en.png" alt="What changes" width="800"></h3>
 
-[Leer en castellano](#en-castellano)
+🔭 **Little text at any zoom.** From afar you only see the main nodes: your topics, or your most connected notes. Zoom into a cluster and each note gets a short label. The zoom level that shows every label scales with vault size, so the picture never fills with text.
 
-## Start
+🖱️ **The full name is one hover away.** Hover any node and it shows the complete file name. Nothing gets lost.
 
-1. Install and enable the plugin.
-2. A 3-step setup opens: pick Vivid or Calm, tick the folders that are topics for you, done.
+🧲 **One hub per topic.** You define your topics. Each one gets a hub note that links its notes, so they cluster by meaning, not by folder.
+
+🌙 **A calm layout.** System notes leave the graph, labels stay visible, and the simulation stops once the nodes settle.
+
+🎨 **Your colors.** Two palettes, Vivid and Calm. Light or dark follows your theme. There is also a palette for color blindness.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/never-edits-en-dark.png">
+  <img src="images/never-edits-en-light.png" alt="It never edits your notes. Topic hubs live in one folder. Everything else only changes how the graph is rendered. Disable the plugin and your graph is back as it was." width="800">
+</picture>
+
+<h3><img src="images/h-palettes-en.png" alt="Palettes" width="800"></h3>
+
+<p align="center"><img src="images/palettes-en.png" alt="The same graph in Vivid and Calm, each in dark and light mode."></p>
+
+<h3><img src="images/h-start-en.png" alt="Start in 3 steps" width="800"></h3>
+
+1. Install and enable the plugin from [Community plugins](https://obsidian.md/help/community-plugins).
+2. Pick Vivid or Calm, tick the folders that are topics for you.
 3. Open the graph.
 
-You can open the setup again with the command **Open the 3-step setup**.
+Run the command **Open the 3-step setup** to see it again.
 
 <details>
-<summary><b>Short labels: how a name gets short</b></summary>
+<summary><b>✂️ How a name gets short</b></summary>
 
 - Dates go: `handoff-2026-10-06-meeting-notes` shows as `meeting notes`.
-- "Title - Author" keeps the title: `Ideario - Enrique Malatesta` shows as `Ideario`.
+- "Title - Author" keeps the title: `Our Share of Night - Mariana Enriquez` shows as `Our Share of…`, and the full title is one hover away.
 - Long names are cut at a whole word and end with `…`.
-- Two notes with the same name (two `README`) get the folder that tells them apart: `work·README`, `home·README`.
-- Want a specific label? Add a `label` property to the note. It always wins.
+- Two notes with the same name get the folder that tells them apart: `work·README`, `home·README`.
+- Want a specific label? Add a `label` [property](https://obsidian.md/help/properties) to the note. It always wins.
 
-Settings: longest label (8 to 30 letters) and label size (1 to 2 times the Obsidian size).
+Settings: max label length (8 to 30 characters) and label size (1x to 2x the Obsidian size).
 
 </details>
 
 <details>
-<summary><b>Topics: how notes find their hub</b></summary>
+<summary><b>🧲 How notes find their hub</b></summary>
 
 Each topic has a name, an emoji and up to three rules. A note joins a topic when any rule matches:
 
 - **Folders:** the note is inside one of these folders.
 - **Words in the title:** whole words, accents ignored.
-- **Tags:** the note has this tag or a tag under it.
+- **Tags:** the note has this tag or a nested tag under it.
 
-A note can be in two topics at most. The hub notes are rewritten when notes change, so do not write inside them.
+A note can be in two topics at most. Hub notes are regenerated when notes change, so do not write inside them.
 
-The status bar shows how many notes have no topic yet. Click it to give each one a topic.
+The status bar shows how many notes have no topic yet. Click it to assign one to each.
 
 </details>
 
 <details>
-<summary><b>Commands</b></summary>
+<summary><b>⌨️ Commands</b></summary>
 
 - **Apply the calm layout to the graph**
 - **Update topic hubs**
-- **Focus on one topic:** opens that topic alone, in a local graph. Also on the ribbon (the target icon).
+- **Focus on one topic:** opens that topic alone, in a [local graph](https://obsidian.md/help/plugins/graph). Also on the ribbon (the target icon).
 - **Turn short labels on or off**
 - **Show notes without a topic**
 - **Open the 3-step setup**
 
-No command has a default hotkey. Add your own in Settings, Hotkeys.
+No command ships with a default hotkey. Add your own in Settings, [Hotkeys](https://obsidian.md/help/hotkeys).
 
 </details>
 
 <details>
-<summary><b>Hidden notes</b></summary>
+<summary><b>🙈 Hidden notes</b></summary>
 
-By default the graph hides notes named `GATES*`, `CLAUDE`, `AGENTS`, `README`, `handoff-*` and `prompt-*`: files that tools and assistants write for themselves. Change the list in the settings. Hidden notes stay in your vault and in search.
+By default the graph hides notes named `GATES*`, `CLAUDE`, `AGENTS`, `README`, `handoff-*` and `prompt-*`: files that tools and AI assistants write for themselves. Edit the list in the settings. Hidden notes stay in your vault and in search.
 
 </details>
 
 <details>
-<summary><b>Good to know</b></summary>
+<summary><b>⚠️ Good to know</b></summary>
 
-- Short labels and the still graph use parts of Obsidian that are not a public API. A future Obsidian update could break them. If that happens, the plugin turns them off and your graph keeps working.
-- Applying the calm layout replaces the graph's filter, groups and forces. Your old settings are not kept.
-- Tested on Obsidian 1.14.4, desktop.
+- Short labels and the still graph use parts of Obsidian outside the [public API](https://docs.obsidian.md). A future Obsidian update could break them. If that happens, the plugin turns them off and your graph keeps working.
+- Applying the calm layout replaces the graph's filter, groups and forces. Your previous settings are not kept.
+- Tested on Obsidian 1.14.4, desktop. [Changelog](https://obsidian.md/changelog/).
 
 </details>
 
-## En castellano
+<h3><img src="images/h-why-en.png" alt="Why it exists" width="800"></h3>
 
-El grafo de Obsidian, legible para cerebros con TDAH y dislexia.
+I needed a better way to organize my second brain. The graph was supposed to show me the big picture, and it showed me noise. Nothing out there was built for a brain that works like mine.
 
-- **Poco texto con cualquier zoom:** de lejos ves solo los puntos principales: tus temas, o las notas con más conexiones si no tenés temas. Al acercarte a un grupo, cada nota muestra un nombre corto de 16 letras o menos. En vaults grandes hay que acercarse más, para que nunca se llene de texto.
-- **El nombre completo, al pasar el mouse:** cualquier punto muestra el nombre entero del archivo.
-- **Una nota por tema:** cada tema tiene una nota que enlaza sus notas, y se agrupan por lo que tratan, no por carpeta.
-- **Layout tranquilo:** las notas de sistema salen del grafo, el texto queda visible y los puntos dejan de moverse.
-- **Dos paletas:** Vivo o Calmo. Claro u oscuro sigue tu tema. Hay una paleta para daltonismo.
+So I built it.
 
-**Nunca edita tus notas.** Las notas de tema viven en una sola carpeta. Lo demás solo cambia cómo se dibuja el grafo.
+<h3><img src="images/h-reach-en.png" alt="Reach out" width="800"></h3>
 
-Para empezar: instalalo, seguí los 3 pasos (Vivo o Calmo, tus temas, listo) y abrí el grafo. Todo está en castellano si Obsidian está en castellano.
+Found a bug? Got an idea? Does the graph look weird in your vault? Let me know!
 
-## License
+- 🐛 [Open an issue](https://github.com/missyeahhh/adhd-hyperfocus-graph/issues): bug reports, feature requests, questions.
+- 💬 [Message me on LinkedIn](https://www.linkedin.com/in/soldr): feedback, or how it fits your workflow.
 
-MIT
+---
+
+🎨 Made by [Soledad De Rosa](https://www.linkedin.com/in/soldr). MIT license.
