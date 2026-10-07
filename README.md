@@ -4,7 +4,8 @@ The Obsidian graph, made readable for ADHD and dyslexic brains.
 
 The core graph shows every file name in full, moves all the time and groups notes by folder. With a few hundred notes it turns into a wall of text. This plugin keeps the graph you already have and changes four things:
 
-- **Little text at any zoom.** From afar you see only your topic names, big. Zoom into a cluster and each note shows a short name of 16 letters or fewer. No hovering.
+- **Little text at any zoom.** From afar you see only the main dots: your topics, or the most connected notes if you have no topics. Zoom into a cluster and each note shows a short name of 16 letters or fewer. Big vaults need a closer zoom before every note gets a name, so the picture never fills with text.
+- **The full name is one hover away.** Point at any dot and it shows the complete file name.
 - **One hub per topic.** You say what your topics are. Each one gets a hub note that links its notes, so they cluster by meaning, not by folder.
 - **A calm layout.** System notes leave the graph, text stays visible, and the dots stop moving once they settle.
 - **Two palettes.** Vivid or Calm. Light or dark follows your theme. There is also a palette for color blindness.
@@ -89,7 +90,8 @@ By default the graph hides notes named `GATES*`, `CLAUDE`, `AGENTS`, `README`, `
 
 El grafo de Obsidian, legible para cerebros con TDAH y dislexia.
 
-- **Poco texto con cualquier zoom:** de lejos ves solo los nombres de tus temas, grandes. Al acercarte a un grupo, cada nota muestra un nombre corto de 16 letras o menos. Sin pasar el mouse.
+- **Poco texto con cualquier zoom:** de lejos ves solo los puntos principales: tus temas, o las notas con más conexiones si no tenés temas. Al acercarte a un grupo, cada nota muestra un nombre corto de 16 letras o menos. En vaults grandes hay que acercarse más, para que nunca se llene de texto.
+- **El nombre completo, al pasar el mouse:** cualquier punto muestra el nombre entero del archivo.
 - **Una nota por tema:** cada tema tiene una nota que enlaza sus notas, y se agrupan por lo que tratan, no por carpeta.
 - **Layout tranquilo:** las notas de sistema salen del grafo, el texto queda visible y los puntos dejan de moverse.
 - **Dos paletas:** Vivo o Calmo. Claro u oscuro sigue tu tema. Hay una paleta para daltonismo.

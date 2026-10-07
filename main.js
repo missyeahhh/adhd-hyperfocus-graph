@@ -403,8 +403,32 @@ function colorGroups(topics, topicsFolder, notesByTopic, folders, colors) {
   return folders.map((d, i) => ({ query: q(d + "/"), color: color(i) }));
 }
 
-// Below this zoom the graph is an overview: only topic hubs are labelled.
-const FAR_ZOOM = 0.3;
+// Below this zoom the graph is an overview and only main nodes are labelled. It grows with the graph:
+// about 0.26 for 100 dots, 0.46 for 350, the 0.6 cap from about 600.
+function farZoom(count) {
+  return Math.min(0.6, Math.max(0.25, 0.3 * Math.sqrt(count / 150)));
+}
+
+// Keeps a main label only if it does not land on top of a more important one at this zoom
+// (labels are about 170 x 36 px on screen at the default label size). Order of `main` is importance.
+function declutter(main, nodes, scale) {
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  const kept = [];
+  for (const id of main) {
+    const n = byId.get(id);
+    if (!n || typeof n.x !== "number") continue;
+    const clash = kept.some((k) => Math.abs(k.x - n.x) * scale < 170 && Math.abs(k.y - n.y) * scale < 36);
+    if (!clash) kept.push(n);
+  }
+  return new Set(kept.map((n) => n.id));
+}
+
+// Main nodes: topic hubs when there are topics, else the most connected nodes (at least 3 links, 15 at most).
+function mainNodes(nodes, hubPrefix, hasTopics) {
+  const degree = (n) => Object.keys(n.forward || {}).length + Object.keys(n.reverse || {}).length;
+  if (hasTopics) return new Set(nodes.filter((n) => n.id.startsWith(hubPrefix)).sort((a, b) => degree(b) - degree(a)).map((n) => n.id));
+  return new Set(nodes.filter((n) => degree(n) >= 3).sort((a, b) => degree(b) - degree(a)).slice(0, 15).map((n) => n.id));
+}
 
 const CALM_LAYOUT = {
   // Obsidian shows labels when log2(zoom) + 1 - textFadeMultiplier > 0: -3 keeps short labels visible
@@ -434,7 +458,7 @@ const DEFAULTS = {
   applyOnNextLoad: false,
 };
 
-module.exports.__test = { shortLabels, cut, clean, assignTopics, isHidden, hideQuery, hubBody, hubFileName, colorGroups, paletteFor, contrast, PALETTES, DEFAULTS, makeT, STRINGS, DEFAULT_HIDE };
+module.exports.__test = { farZoom, mainNodes, declutter, shortLabels, cut, clean, assignTopics, isHidden, hideQuery, hubBody, hubFileName, colorGroups, paletteFor, contrast, PALETTES, DEFAULTS, makeT, STRINGS, DEFAULT_HIDE };
 
 /* ------------------------------------------------------------------ */
 /* Obsidian                                                            */
@@ -459,6 +483,8 @@ if (obsidian) {
       this.dirty = true;
       this.signatures = new WeakMap();
       this.stillTimers = new WeakMap();
+      this.hoverWrapped = new WeakMap();
+      this.hovered = null;
 
       const markDirty = () => { this.dirty = true; };
       this.scheduleHubs = debounce(() => this.updateHubs(false), 4000, true);
@@ -561,12 +587,16 @@ if (obsidian) {
         const r = view.renderer;
         const nodes = nodesOf(r).filter((n) => n && typeof n.id === "string");
         if (!this.settings.shortLabels) { this.restoreLabels(); continue; }
-        // Zoomed out, only topic hubs keep a label, drawn bigger so it stays readable (Obsidian shrinks text
-        // with zoom). Zoom into a cluster and every note shows its short label. Little text at any zoom.
+        // Zoomed out, only the main nodes keep a label, drawn bigger so it stays readable (Obsidian shrinks
+        // text with zoom). Main nodes are the topic hubs or, in a vault without topics, the most connected
+        // nodes. Bigger graphs need a closer zoom before every note gets its label. Little text at any zoom.
+        this.wrapHover(r);
         const scale = r.scale || 1;
+        const FAR_ZOOM = farZoom(nodes.length);
         const far = scale < FAR_ZOOM;
-        const boost = far ? Math.round(Math.min(3, FAR_ZOOM / scale) * 4) / 4 : 1;
-        const signature = nodes.length + ":" + this.settings.maxLabel + ":" + this.settings.labelSize + ":" + far + ":" + boost;
+        const main = far ? declutter(mainNodes(nodes, normalizePath(this.settings.topicsFolder || "Topics") + "/", this.settings.topics.length > 0), nodes, scale) : new Set();
+        const zoomStep = far ? Math.round(Math.log2(scale) * 2) : 0;  // re-declutter every half zoom step
+        const signature = nodes.length + ":" + this.settings.maxLabel + ":" + this.settings.labelSize + ":" + far + ":" + zoomStep;
         if (!dirty && this.signatures.get(r) === signature) continue;
         this.signatures.set(r, signature);
         const items = nodes.map((n) => {
@@ -579,11 +609,12 @@ if (obsidian) {
         });
         const labels = shortLabels(items, this.settings.maxLabel);
         let changed = false;
-        const hubPrefix = normalizePath(this.settings.topicsFolder || "Topics") + "/";
         for (const n of nodes) {
-          const hub = n.id.startsWith(hubPrefix);
-          const text = far && !hub && this.settings.topics.length ? " " : labels.get(n.id);
-          changed = this.label(n, text, this.settings.labelSize * (hub ? boost : 1)) || changed;
+          if (this.hovered && this.hovered.node === n) continue;
+          const isMain = main.has(n.id);
+          const text = far && !isMain ? " " : labels.get(n.id);
+          if (n.__hyperfocusMain !== (far && isMain)) { n.__hyperfocusMain = far && isMain; n.fontDirty = true; changed = true; }
+          changed = this.label(n, text, this.settings.labelSize) || changed;
         }
         if (changed && typeof r.changed === "function") r.changed();
         this.keepStill(view);
@@ -596,12 +627,40 @@ if (obsidian) {
         this.patched.set(node, {
           display: Object.prototype.hasOwnProperty.call(node, "getDisplayText") ? node.getDisplayText : null,
           style: Object.prototype.hasOwnProperty.call(node, "getTextStyle") ? node.getTextStyle : null,
+          render: Object.prototype.hasOwnProperty.call(node, "render") ? node.render : null,
         });
+        // A main node seen from afar keeps its label at a fixed size on screen and fully visible,
+        // the way Obsidian draws the node under the pointer.
+        const baseRender = Object.getPrototypeOf(node).render;
+        if (typeof baseRender === "function") {
+          node.render = function () {
+            const out = baseRender.apply(this, arguments);
+            const r = this.renderer;
+            if (this.__hyperfocusMain && this.text && r && r.scale < 1) {
+              // about 18 px on screen (times the label size setting), whatever the dot size or the zoom
+              const fontSize = (this.text.style && this.text.style.fontSize) || 16;
+              this.text.scale.x = this.text.scale.y = (18 * (this.__hyperfocusSize || 1)) / fontSize / r.scale;
+              this.text.alpha = 1;
+              this.text.visible = true;
+              // Obsidian skips placing text it considers invisible: place it under the dot, as it would
+              const size = typeof this.getSize === "function" ? this.getSize() : 8;
+              this.text.x = this.x;
+              this.text.y = this.y + (size + 5) * (r.nodeScale || 1);
+            }
+            return out;
+          };
+        }
         const baseStyle = Object.getPrototypeOf(node).getTextStyle;
         if (typeof baseStyle === "function") {
           node.getTextStyle = function () {
             const st = baseStyle.call(this);
             st.fontSize = st.fontSize * (this.__hyperfocusSize || 1);
+            if (this.__hyperfocusMain) {
+              // an outline in the background color keeps a main label readable over a crowd of dots
+              const bg = getComputedStyle(document.body).getPropertyValue("--background-primary").trim() || "#1e1e1e";
+              st.stroke = bg;
+              st.strokeThickness = Math.max(3, st.fontSize / 5);
+            }
             return st;
           };
         }
@@ -613,11 +672,41 @@ if (obsidian) {
       return changed;
     }
 
+    // While the pointer is on a dot, it shows the full file name: a short label never hides the real one.
+    wrapHover(r) {
+      if (this.hoverWrapped.has(r) || typeof r.onNodeHover !== "function") return;
+      const orig = { hover: r.onNodeHover, unhover: r.onNodeUnhover };
+      this.hoverWrapped.set(r, orig);
+      r.onNodeHover = (e, id, type) => {
+        try {
+          const node = r.nodeLookup && r.nodeLookup[id];
+          if (node && node.text && this.settings.shortLabels) {
+            const f = this.app.vault.getAbstractFileByPath(id);
+            this.hovered = { r, node };
+            node.text.text = f instanceof TFile ? f.basename : String(id).split("/").pop();
+            node.fontDirty = true;
+            r.changed();
+          }
+        } catch (err) { /* never block Obsidian's own hover */ }
+        return orig.hover.call(r, e, id, type);
+      };
+      r.onNodeUnhover = (...args) => {
+        if (this.hovered && this.hovered.r === r) { this.hovered = null; this.signatures.delete(r); this.dirty = true; }
+        return orig.unhover ? orig.unhover.apply(r, args) : undefined;
+      };
+    }
+
     restoreLabels() {
+      for (const v of graphViews(this.app)) {
+        const orig = this.hoverWrapped && this.hoverWrapped.get(v.renderer);
+        if (orig) { v.renderer.onNodeHover = orig.hover; v.renderer.onNodeUnhover = orig.unhover; this.hoverWrapped.delete(v.renderer); }
+      }
       for (const [node, orig] of this.patched) {
         if (orig.display) node.getDisplayText = orig.display; else delete node.getDisplayText;
         if (orig.style) node.getTextStyle = orig.style; else delete node.getTextStyle;
+        if (orig.render) node.render = orig.render; else delete node.render;
         delete node.__hyperfocusSize;
+        delete node.__hyperfocusMain;
         if (node.text && typeof node.getDisplayText === "function") node.text.text = node.getDisplayText();
         node.fontDirty = true;
       }

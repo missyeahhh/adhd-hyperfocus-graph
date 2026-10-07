@@ -96,3 +96,22 @@ test("color groups fall back to folders when there are no topics", () => {
 test("a cut that falls between two words keeps the last word", () => {
   assert.equal(T.cut("my reading list for june", 16), "my reading list…");
 });
+
+test("bigger graphs need a closer zoom before every note is labelled", () => {
+  assert.ok(T.farZoom(100) < T.farZoom(350) && T.farZoom(350) < T.farZoom(3000));
+  assert.equal(T.farZoom(3000), 0.6);
+  assert.equal(T.farZoom(10), 0.25);
+});
+
+test("main nodes: topic hubs, or the most connected nodes when there are no topics", () => {
+  const node = (id, links) => ({ id, forward: Object.fromEntries(Array.from({ length: links }, (_, i) => [id + i, 1])), reverse: {} });
+  const nodes = [node("Topics/A.md", 1), node("a.md", 9), node("b.md", 2), node("c.md", 5)];
+  assert.deepEqual([...T.mainNodes(nodes, "Topics/", true)], ["Topics/A.md"]);
+  assert.deepEqual([...T.mainNodes(nodes, "Topics/", false)], ["a.md", "c.md"]);
+});
+
+test("declutter keeps the most important of two labels that would overlap", () => {
+  const nodes = [{ id: "big", x: 0, y: 0 }, { id: "near", x: 50, y: 5 }, { id: "far", x: 2000, y: 0 }];
+  assert.deepEqual([...T.declutter(new Set(["big", "near", "far"]), nodes, 0.1)], ["big", "far"]);
+  assert.deepEqual([...T.declutter(new Set(["big", "near", "far"]), nodes, 5)], ["big", "near", "far"]);
+});
